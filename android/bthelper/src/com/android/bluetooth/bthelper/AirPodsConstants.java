@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.settings.bluetooth;
+package com.android.bluetooth.bthelper;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.ParcelUuid;
@@ -22,10 +22,10 @@ import android.os.ParcelUuid;
 import java.util.HashSet;
 import java.util.Set;
 
-class AirPodsConstants {
+public class AirPodsConstants {
 
-    static final int MANUFACTURER_ID = 0x004C;
-    static final int MANUFACTURER_MAGIC = 0x07;
+    public static final int MANUFACTURER_ID = 0x004C;
+    public static final int MANUFACTURER_MAGIC = 0x07;
 
     private static final Set<ParcelUuid> UUIDS = new HashSet<>();
 
@@ -34,14 +34,17 @@ class AirPodsConstants {
         UUIDS.add(ParcelUuid.fromString("2a72e02b-7b99-778f-014d-ad0b7221ec74"));
     }
 
-    static boolean shouldBeAirPods(BluetoothDevice device) {
-        for (ParcelUuid uuid : device.getUuids()) {
-            if (AirPodsConstants.UUIDS.contains(uuid)) {
-                return true;
+    public static boolean shouldBeAirPods(BluetoothDevice device) {
+        try {
+            for (ParcelUuid uuid : device.getUuids()) {
+                if (AirPodsConstants.UUIDS.contains(uuid)) {
+                    return true;
+                }
             }
+            return false;
+        } catch (NullPointerException e) {
+            return false;
         }
-
-        return false;
     }
 
 }
